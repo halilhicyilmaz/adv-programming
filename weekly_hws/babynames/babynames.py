@@ -38,11 +38,27 @@ def extract_names(filename):
   """
   Given a file name for baby.html, returns a list starting with the year string
   followed by the name-rank strings in alphabetical order.
-  ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
+  ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
   """
-  # +++your code here+++
-  return
+  with open(filename, 'r') as file:
+    html_content = file.read()
 
+  # Extract the year using regex
+  year_match = re.search(r'Popularity in (\d{4})', html_content)
+  year = year_match.group(1)
+
+  # Extract the name-rank strings using regex
+  name_rank_matches = re.findall(r'<tr align="right"><td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>', html_content)
+
+  name_ranks = [f'{name} {rank}' for rank, male, female in name_rank_matches for name in (male, female)]
+
+  # Sort the name-rank strings in alphabetical order
+  name_ranks.sort()
+
+  # Prepend the year to the list
+  name_ranks.insert(0, year)
+
+  return name_ranks
 
 def main():
   # This command-line parsing code is provided.
@@ -63,6 +79,20 @@ def main():
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
+  # LAB(begin solution)
+  for filename in args:
+    names = extract_names(filename)
+
+    # Make text out of the whole list
+    text = '\n'.join(names)
+
+    if summary:
+      with open(filename + '.summary', 'w', encoding='utf-8') as outf:
+        outf.write(text + '\n')
+        outf.close()
+    # else:
+    #   print(text)
+  # LAB(end solution)
 
 if __name__ == '__main__':
   main()
