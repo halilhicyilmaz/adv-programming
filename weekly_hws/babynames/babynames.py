@@ -90,8 +90,8 @@ def main():
       with open(filename + '.summary', 'w', encoding='utf-8') as outf:
         outf.write(text + '\n')
         outf.close()
-    # else:
-    #   print(text)
+    else:
+      print(text)
   # LAB(end solution)
 
 if __name__ == '__main__':
