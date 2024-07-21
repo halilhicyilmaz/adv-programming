@@ -44,34 +44,51 @@ columns, so the output looks better.
 import random
 import sys
 
-
 def mimic_dict(filename):
-  """Returns mimic dict mapping each word to list of words which follow it."""
-  
-  with open(filename, 'r') as file:
-    words = file.read().split()
+    """Returns mimic dict mapping each word to list of words which follow it."""
+    
+    # Open the file and read all words into a list
+    with open(filename, 'r') as file:
+        words = file.read().split()
 
-  mimic_dict = {}
-  prev_word = ''
-  for word in words:
-    if prev_word not in mimic_dict:
-      mimic_dict[prev_word] = []
-    mimic_dict[prev_word].append(word)
-    prev_word = word
+    # Initialize an empty dictionary to hold the mimic dictionary
+    mimic_dict = {}
+    # Initialize the previous word as an empty string
+    prev_word = ''
+    
+    # Iterate through each word in the list of words
+    for word in words:
+        # If the previous word is not already in the dictionary, add it with an empty list
+        if prev_word not in mimic_dict:
+            mimic_dict[prev_word] = []
+        # Append the current word to the list of words that follow the previous word
+        mimic_dict[prev_word].append(word)
+        # Update the previous word to the current word
+        prev_word = word
 
-  return mimic_dict
-
+    # Return the completed mimic dictionary
+    return mimic_dict
 
 
 def print_mimic(mimic_dict, word):
-  """Given mimic dict and start word, prints 200 random words."""
-  for _ in range(200):
-    print(word, end=' ')
-    next_words = mimic_dict.get(word)
-    if not next_words:
-      next_words = mimic_dict['']
-    word = random.choice(next_words)
-  return
+    """Given mimic dict and start word, prints 200 random words."""
+    
+    # Import the random module
+    import random
+    
+    # Print 200 words
+    for _ in range(200):
+        # Print the current word followed by a space
+        print(word, end=' ')
+        # Get the list of next words that follow the current word from the mimic dictionary
+        next_words = mimic_dict.get(word)
+        # If there are no next words (word not in dictionary), use the list of words that follow the empty string
+        if not next_words:
+            next_words = mimic_dict['']
+        # Choose a random word from the list of next words to be the next word to print
+        word = random.choice(next_words)
+    # Return from the function
+    return
 
 
 # Provided main(), calls mimic_dict() and mimic()
